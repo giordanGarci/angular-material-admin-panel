@@ -1,2 +1,11 @@
-<button mat-flat-button>Clique-me</button>
-<router-outlet />
+<mat-toolbar color="primary">
+  <span>Customer registration</span>
+  <span class="spacer"></span>
+  <a routerLink="/register">
+    <mat-icon fontIcon="feed"></mat-icon>
+    Formulário</a>
+  <a routerLink="/consult">
+    <mat-icon fontIcon="search"></mat-icon>
+    Consulta</a>
+</mat-toolbar>
+<router-outlet></router-outlet>
