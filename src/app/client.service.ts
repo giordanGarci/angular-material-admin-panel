@@ -22,7 +22,7 @@ export class ClientService {
     localStorage.setItem(ClientService.REPO_CLIENTS, JSON.stringify(storage));
   }
 
-  getStorage() : Client[] {
+  private getStorage() : Client[] {
     const respositoryClients = localStorage.getItem(ClientService.REPO_CLIENTS);
     if(respositoryClients){
       const clients: Client[] = JSON.parse(respositoryClients);
@@ -38,5 +38,9 @@ export class ClientService {
     return clients;
   }
 
+  getClients(name: string): Client[] {
+    const clients = this.getStorage();
+    return clients.filter(c => c.name?.toLowerCase().includes(name.toLowerCase()));
+  }
 
 }
