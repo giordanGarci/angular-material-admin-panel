@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Client } from'./client';
+import { ClientService } from '../client.service';
 
 @Component({
   selector: 'app-register',
@@ -23,14 +24,12 @@ import { Client } from'./client';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
-  client: Client;
+  client: Client = Client.newClient();
 
-  constructor() {
-    this.client = Client.newClient();
-  }
+  constructor(private clientService: ClientService) {}
 
   addClient() {
-    console.log(this.client);
+    this.clientService.addClient(this.client);
   }
 
 }
