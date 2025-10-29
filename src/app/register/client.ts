@@ -8,8 +8,9 @@ export class Client {
   birthDate?: string;
 
   static newClient(){
-    let client = new Client();
+    const client = new Client();
     client.id = uuid();
     return client;
   }
+
 }

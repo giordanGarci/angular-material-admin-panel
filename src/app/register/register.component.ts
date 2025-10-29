@@ -28,4 +28,9 @@ export class RegisterComponent {
   constructor() {
     this.client = Client.newClient();
   }
+
+  addClient() {
+    console.log(this.client);
+  }
+
 }
