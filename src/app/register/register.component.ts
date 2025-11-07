@@ -8,6 +8,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Client } from'./client';
 import { ClientService } from '../client.service';
+import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -18,18 +21,39 @@ import { ClientService } from '../client.service';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    CommonModule
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
   client: Client = Client.newClient();
+  editing: boolean = false;
 
-  constructor(private clientService: ClientService) {}
+  constructor(private clientService: ClientService, private activatedRoute: ActivatedRoute, private router: Router) {}
 
-  addClient() {
-    this.clientService.addClient(this.client);
+  saveClient() {
+    if (!this.editing){
+      this.clientService.addClient(this.client);
+      this.client = Client.newClient();
+    }else{
+      this.clientService.edit(this.client);
+      this.router.navigate(['/consult']);
+    }
+  }
+
+  ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params['id']) {
+        let foundClient = this.clientService.getClientById(params['id']);
+        if (foundClient) {
+          this.client = foundClient;
+          this.editing = true;
+        }
+      }
+    });
+    console.log(this.client);
   }
 
 }
