@@ -40,7 +40,32 @@ export class ClientService {
 
   getClients(name: string): Client[] {
     const clients = this.getStorage();
+    if (!name) {
+      return clients;
+    }
     return clients.filter(c => c.name?.toLowerCase().includes(name.toLowerCase()));
   }
 
+  getClientById(id: string): Client {
+    const clients = this.getStorage();
+    return clients.find(c => c.id === id) || Client.newClient();
+  }
+
+  edit(client: Client) {
+    const clients = this.getStorage();
+    const clientIndex = clients.findIndex(c => c.id === client.id);
+    if (clientIndex > -1) {
+      clients[clientIndex] = client;
+      localStorage.setItem(ClientService.REPO_CLIENTS, JSON.stringify(clients));
+    }
+  }
+
+  deleteClient(clientId: string) {
+    const clients = this.getStorage();
+    const clientIndex = clients.findIndex(c => c.id === clientId);
+    if (clientIndex > -1) {
+      clients.splice(clientIndex, 1);
+      localStorage.setItem(ClientService.REPO_CLIENTS, JSON.stringify(clients));
+    }
+  }
 }

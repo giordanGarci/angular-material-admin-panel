@@ -9,6 +9,7 @@ import { ClientService } from '../client.service';
 import { MatButtonModule } from '@angular/material/button';
 import { Client } from '../register/client';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-consult',
@@ -18,19 +19,34 @@ import { CommonModule } from '@angular/common';
 })
 export class ConsultComponent implements OnInit {
 
+  nameToSearch: string = "";
   clients: Client[] = [];
-  displayedColumns = ['name', 'email', 'cpf', 'birthDate'];
+  displayedColumns = ['name', 'email', 'cpf', 'birthDate', 'actions'];
 
   constructor(
-    private clientService: ClientService
+    private clientService: ClientService,
+    private router: Router
   ){}
 
-  getClients(name: string): Client[] {
-    return this.clientService.getClients(name);
+  ngOnInit(): void {
+    this.clients = this.clientService.getClients("")
   }
 
-  ngOnInit(): void {
-    this.clients = this.getClients("");
+  getClients(): void {
+    this.clients = this.clientService.getClients(this.nameToSearch);
+  }
+
+  prepareEdit(clientId: string): void {
+    this.router.navigate(['/register'], {queryParams: {"id": clientId}});
+  }
+
+  prepareDelete(client: Client): void {
+    client.isDeleting = true;
+  }
+
+  deleteClient(clientId: string): void {
+    this.clientService.deleteClient(clientId);
+    this.getClients();
   }
 
 }
