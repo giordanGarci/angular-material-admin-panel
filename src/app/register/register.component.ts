@@ -7,12 +7,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { Client } from'./client';
 import { ClientService } from '../client.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { BrasilapiService } from '../brasilapi.service';
+import { Estado, Municipio } from '../brasilapi.model';
+
 
 @Component({
   selector: 'app-register',
@@ -22,6 +26,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatIconModule,
     MatButtonModule,
     CommonModule,
@@ -37,8 +42,30 @@ export class RegisterComponent {
   client: Client = Client.newClient();
   editing: boolean = false;
   snackBar = inject(MatSnackBar);
+  estados: Estado[] = [];
+  municipios: Municipio[] = [];
 
-  constructor(private clientService: ClientService, private activatedRoute: ActivatedRoute, private router: Router) {}
+  constructor(
+    private clientService: ClientService,
+    private brasilapiService: BrasilapiService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router) {}
+
+  loadUFs() {
+    this.brasilapiService.getEstados().subscribe({
+      next:  estados => this.estados = estados,
+      error: error => console.log(error)
+    });
+  }
+
+  loadMunicipios(event: MatSelectChange) {
+    const estado =  event.value;
+    this.brasilapiService.getMunicipios(estado).subscribe({
+        next:  municipios => this.municipios = municipios,
+        error: error => console.log(error)
+      }
+    );
+  }
 
   saveClient() {
     if (!this.editing){
@@ -48,7 +75,6 @@ export class RegisterComponent {
     }else{
       this.clientService.edit(this.client);
       this.router.navigate(['/consult']);
-      this.showMessage("Cliente atualizado com sucesso!");
 
     }
   }
@@ -68,7 +94,11 @@ export class RegisterComponent {
         }
       }
     });
-    console.log(this.client);
+    this.loadUFs();
+    if (this.client.uf) {
+        const event = {value: this.client.uf};
+        this.loadMunicipios(event as MatSelectChange);
+      }
   }
 
   showMessage(message: string) {

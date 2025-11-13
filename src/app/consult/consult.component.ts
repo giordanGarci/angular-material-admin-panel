@@ -22,7 +22,7 @@ export class ConsultComponent implements OnInit {
 
   nameToSearch: string = "";
   clients: Client[] = [];
-  displayedColumns = ['name', 'email', 'cpf', 'birthDate', 'actions'];
+  displayedColumns = ['name', 'email', 'cpf', 'birthDate', 'uf', 'municipio', 'actions'];
   snackBar = inject(MatSnackBar);
 
   constructor(
