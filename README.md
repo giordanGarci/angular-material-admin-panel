@@ -1,6 +1,9 @@
 # CrudAngularMaterial
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.2.
+This repository contains a simple admin panel built as a study project to practice the fundamentals of Angular and the Angular Material component library.
+
+The main goal was not to create a feature-complete, production-ready application, but to serve as a "sandbox" for learning and experimenting with key concepts.
 
 ## Development server
 
