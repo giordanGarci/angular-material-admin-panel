@@ -40,6 +40,7 @@
                       placeholder="Digite seu CPF"
                       matInput
                       name="cpf"
+                      mask="000.000.000-00"
                       required
                       [(ngModel)]="client.cpf"/>
               </mat-form-field>
@@ -55,6 +56,7 @@
                       placeholder="DD/MM/AAAA"
                       name="birthDate"
                       required
+                      mask="00/00/0000"
                       [(ngModel)]="client.birthDate"/>
               </mat-form-field>
             </div>
@@ -73,7 +75,7 @@
               </button>
             }
 
-            <button mat-flat-button color="accent">
+            <button mat-flat-button color="accent" type="button" (click)="clearForm()">
               <mat-icon fontIcon="backspace"></mat-icon>
               Limpar
             </button>
