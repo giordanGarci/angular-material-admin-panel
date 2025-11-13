@@ -20,6 +20,7 @@ export class ClientService {
 
     storage.push(client);
     localStorage.setItem(ClientService.REPO_CLIENTS, JSON.stringify(storage));
+    return alert("Cliente cadastrado com sucesso!");
   }
 
   private getStorage() : Client[] {
